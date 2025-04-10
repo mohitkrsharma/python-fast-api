@@ -29,13 +29,13 @@ print("Is a greater than b?", a > b)  # Prints whether a is greater than b
 print("Is a equal to b?", a == b)  # Prints whether a is equal to b
 
 # Uncomment and use to check if a number entered by the user is positive, negative, or zero
-# num = int(input("Enter a number: "))
-# if num > 0:
-#     print("Positive")
-# elif num < 0:
-#     print("Negative")
-# else:
-#     print("Zero")
+num = int(input("Enter a number: "))
+if num > 0:
+    print("Positive")
+elif num < 0:
+    print("Negative")
+else:
+    print("Zero")
 
 # Loop to print numbers from 1 to 5
 for i in range(1, 6):
