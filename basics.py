@@ -244,3 +244,162 @@ while True:
     else:
         print("Invalid choice! Please try again.")
         continue  # Restart the loop to ask for a valid choice
+
+#  Object-Oriented Programming in Python
+class User:
+    def __init__(self, name, age):
+        self.name = name  # Initializing the name attribute
+        self.age = age  # Initializing the age attribute
+
+    def greet(self):
+        """Method to greet the user."""
+        print(f"Hello, my name is {self.name} and I am {self.age} years old.")  # Greeting message with name and age
+
+
+# Creating objects of the User class
+user = User("Mohit", 33)  # Creating a new User object with name and age
+user.greet()  # Calling the greet method to display the greeting message
+
+# Class Variables vs Instance Variables
+class GymMember:
+    membership_fee = 1000  # Class variable (shared by all instances)
+
+    def __init__(self, name, age):
+        self.name = name  # Instance variable (unique to each instance)
+        self.age = age  # Instance variable (unique to each instance)
+
+    def display_info(self):
+        """Method to display member information."""
+        print(f"Name: {self.name}, Age: {self.age}, Membership Fee: {GymMember.membership_fee}")  # Display member info with class variable
+
+member1 = GymMember("Mohit", 33)  # Creating a new GymMember object
+member2 = GymMember("Sharma", 28)  # Creating another GymMember object
+member1.display_info()  # Displaying info for member1
+member2.display_info()  # Displaying info for member2
+
+# Inheritance in Python
+class Animal:
+    def __init__(self, species):
+        self.species = species  # Initializing the species attribute
+
+    def speak(self):
+        """Method to make the animal speak."""
+        print(f"{self.species} makes a sound.")
+
+class Dog(Animal):
+    def __init__(self, name):
+        super().__init__("Dog")
+        self.name = name  # Initializing the name attribute
+
+    def bark(self):
+        """Method for the dog to bark."""
+        print(f"{self.name} barks!")
+
+dog1 = Dog("Bruno")
+dog1.speak()  # inherited
+dog1.bark()   # child class method
+
+# Encapsulation (Private Variables)
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # Private variable (not accessible outside the class)
+
+    def deposit(self, amount):
+        """Method to deposit money into the account."""
+        self.__balance += amount  # Adding amount to the balance
+
+    def withdraw(self, amount):
+        """Method to withdraw money from the account."""
+        if amount <= self.__balance:
+            self.__balance -= amount  # Subtracting amount from the balance
+            print(f"Withdrew {amount}. New balance: {self.__balance}")
+        else:
+            print("Insufficient funds!")  # Error message for insufficient funds
+
+acc = BankAccount(1000)  # Creating a new BankAccount object with initial balance
+acc.deposit(500)  # Depositing money into the account
+acc.withdraw(200)  # Withdrawing money from the account
+# Uncommenting the following line would result in an error:
+
+class BankAccountNew:
+    def __init__(self, owner):
+        self.owner = owner
+        self.__balance = 0  # private variable
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount):
+        if amount > 0 and amount <= self.__balance:
+            self.__balance -= amount
+        else:
+            print("Insufficient funds or invalid amount!")
+
+    def get_balance(self):
+        return self.__balance
+
+acc = BankAccountNew("Mohit")
+acc.deposit(1000)
+print("Balance:", acc.get_balance())
+
+# Polymorphism (Same method name, different behavior)
+class Bird:
+    def sound(self):
+        print("Bird chirps")
+
+class Sparrow(Bird):
+    def sound(self):
+        print("Sparrow chirps")  # Overriding the sound method for Sparrow
+
+class Owl(Bird):
+    def sound(self):
+        print("Owl hoots")  # Overriding the sound method for Owl
+
+birds = [Sparrow(), Owl()]  # List of Bird objects (Sparrow and Owl)
+for bird in birds:
+    bird.sound()  # Calls the overridden sound method for each bird type
+
+# ✅ Mini Project: Gym Member Management System
+class GymMember:
+    def __init__(self, name, age):
+        self.name = name  # Initializing the name attribute
+        self.age = age  # Initializing the age attribute
+
+    def display_info(self):
+        """Method to display member information."""
+        print(f"Name: {self.name}, Age: {self.age}")  # Display member info
+
+class Gym:
+    def __init__(self):
+        self.members = []  # List to store gym members
+
+    def add_member(self, member):
+        """Method to add a new member."""
+        self.members.append(member)  # Adding member to the list
+
+    def show_members(self):
+        """Method to display all members."""
+        print("Gym Members:")
+        for member in self.members:
+            member.display_info()  # Displaying info for each member
+
+gym = Gym()  # Creating a new Gym object
+gym.add_member(GymMember("Mohit", 33))  # Adding a member to the gym
+
+while True:
+     print("\n1. Add Member\n2. Show Members\n3. Exit")
+     choice = input("Enter choice: ")
+
+     if choice == '1':
+         name = input("Enter member name: ")
+         age = int(input("Enter member age: "))
+         gym.add_member(GymMember(name, age))  # Adding a new member
+         print(f"Member '{name}' added.")
+     elif choice == '2':
+            gym.show_members()  # Showing all members
+     elif choice == '3':
+            print("Exiting... Goodbye!")  # Exit message when choice is 3
+            break  # Exit the loop and end the program
+     else:
+            print("Invalid choice! Please try again.")
