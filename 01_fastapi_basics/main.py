@@ -46,40 +46,53 @@ def delete_item(item_id: int):
 # 4. Update the product details. Just return back what was updated.
 # 5. Delete the product and return a message like: Product with id 3 deleted successfully
 
+# Hardcoded list of products
 product_list = [
     {"id": 1, "name": "Laptop", "price": 1000.0},
     {"id": 2, "name": "Smartphone", "price": 500.0},
     {"id": 3, "name": "Tablet", "price": 300.0}
 ]
 
-# Create indexes for faster search
+# Create indexes for faster search by name and price
 product_name_index = {product["name"].lower(): product for product in product_list}
 product_price_index = {product["price"]: product for product in product_list}
 
+# Define a Pydantic model for Product
 class Product(BaseModel):
     id: int
     name: str
     price: float
 
-# Get All Products
+# Endpoint to get all products
 @app.get("/products/")
 def get_all_products():
+    """
+    Returns a list of all products.
+    """
     return {"products": product_list}
 
-# Get Product by ID
+# Endpoint to get a product by its ID
 @app.get("/products/{product_id}")
 def get_product_by_id(product_id: int):
+    """
+    Returns the details of a product by its ID.
+    If the product is not found, raises a 404 HTTP exception.
+    """
     for product in product_list:
         if product["id"] == product_id:
             return {"product": product}
     from fastapi import HTTPException  # Add this import at the top of the file if not already present
     raise HTTPException(status_code=404, detail="Product not found!")
 
-#  Search product by name or price
+# Endpoint to search for products by name or price
 from typing import Optional  # Add this import at the top of the file if not already present
 
 @app.get("/products/search/")
 def search_product(name: Optional[str] = None, price: Optional[float] = None):
+    """
+    Searches for products by name or price.
+    Returns a list of matching products or a message if no products are found.
+    """
     results = []
     if name:
         product = product_name_index.get(name.lower())
@@ -91,24 +104,38 @@ def search_product(name: Optional[str] = None, price: Optional[float] = None):
             results.append(product)
     return {"products": results} if results else {"message": "No products found!"}
 
-#  Post product
+# Endpoint to create a new product
 @app.post("/products/")
 def create_product(product: Product):
+    """
+    Accepts a product in the request body and adds it to the product list.
+    Returns a success message along with the created product.
+    """
     product_list.append(product.dict())
     return {"message": "Product created successfully!", "product": product}
 
-# Update Product
+# Endpoint to update an existing product by its ID
 @app.put("/products/{product_id}")
 def update_product(product_id: int, product: Product):
+    """
+    Updates the details of an existing product by its ID.
+    Returns a success message along with the updated product.
+    If the product is not found, returns a not found message.
+    """
     for idx, p in enumerate(product_list):
         if p["id"] == product_id:
             product_list[idx] = product.dict()
             return {"message": "Product updated successfully!", "product": product}
     return {"message": "Product not found!"}
 
-# Delete Product
+# Endpoint to delete a product by its ID
 @app.delete("/products/{product_id}")
 def delete_product(product_id: int):
+    """
+    Deletes a product by its ID.
+    Returns a success message if the product is deleted.
+    If the product is not found, returns a not found message.
+    """
     for idx, product in enumerate(product_list):
         if product["id"] == product_id:
             del product_list[idx]
